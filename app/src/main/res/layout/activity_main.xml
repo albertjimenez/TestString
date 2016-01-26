@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.beruto.teststring.MainActivity">
+    tools:context="com.example.beruto.teststring.MainActivity"
+    android:background="#b21313"
+    android:clickable="false">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
