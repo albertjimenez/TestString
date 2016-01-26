@@ -11,11 +11,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.concurrent.atomic.AtomicInteger;
+
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView etiquetaTexto;
     private Button boton;
     private EditText cajaTexto;
+    private AtomicInteger contador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //inicializaciones de mis atributos
         //los rescato de content_main.xml para tener acceso
-
+        contador = new AtomicInteger(0);
         etiquetaTexto = (TextView) findViewById(R.id.textView);
         boton = (Button) findViewById(R.id.button);
         cajaTexto = (EditText) findViewById(R.id.editText);
@@ -41,14 +46,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
+        boton.setOnClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("TestSanti");
     }
 
     @Override
@@ -73,5 +76,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button:
+                contador.incrementAndGet();
+                Toast.makeText(getApplicationContext(), "Tokis repite " + contador.get(), Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }
