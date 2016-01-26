@@ -18,13 +18,12 @@
         android:text="@string/CadenaTexto"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:capitalize="sentences"
         android:id="@+id/textView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accion"
+        android:text="@string/accion"
         android:id="@+id/button"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
