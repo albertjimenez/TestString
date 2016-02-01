@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">TestString</string>
     <string name="action_settings">Settings</string>
-    <string name="CadenaTexto">Hola Santi</string>
-    <string name="accion">Accion</string>
+    <string name="CadenaTexto">El Hadry</string>
+    <string name="accion">Tokis</string>
+    <string name="cadenaTokistica">Nuevo Intent</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="suspensas">Numero de asignaturas suspendidas por el tokis:</string>
 </resources>

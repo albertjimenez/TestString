@@ -1,5 +1,6 @@
 package com.example.beruto.teststring;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         contador = new AtomicInteger(0);
         etiquetaTexto = (TextView) findViewById(R.id.textView);
         boton = (Button) findViewById(R.id.button);
-        cajaTexto = (EditText) findViewById(R.id.editText);
+
         // etiquetaTexto.setText("jeje me has tocado");
 
         //Accion del boton flotante
@@ -81,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button:
                 contador.incrementAndGet();
-                Toast.makeText(getApplicationContext(), "Tokis repite " + contador.get(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Tokis repite " + contador.get()+ "asignaturas", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.button2:
+                Intent intent = new Intent(this,Main2Activity.class);
+                startActivity(intent);
                 break;
         }
     }
