@@ -6,4 +6,8 @@
     <string name="cadenaTokistica">Nuevo Intent</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="suspensas">Numero de asignaturas suspendidas por el tokis:</string>
+    <string name="textoBotonMA2">No funciono aún</string>
+    <string name="title_activity_main22">Main22Activity</string>
+    <string name="Actividad2Texto">Hola</string>
+    <string name="NumAsig">E</string>
 </resources>

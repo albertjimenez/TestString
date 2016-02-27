@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView etiquetaTexto;
     private Button boton;
+    private Button botonTokistico;
     private EditText cajaTexto;
     private AtomicInteger contador;
     @Override
@@ -32,21 +33,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //los rescato de content_main.xml para tener acceso
         contador = new AtomicInteger(0);
         etiquetaTexto = (TextView) findViewById(R.id.textView);
-        boton = (Button) findViewById(R.id.button);
+        boton = (Button) findViewById(R.id.button2);
 
         // etiquetaTexto.setText("jeje me has tocado");
 
         //Accion del boton flotante
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
-
+        botonTokistico = (Button) findViewById(R.id.botonTokis);
+        botonTokistico.setOnClickListener(this);
         boton.setOnClickListener(this);
     }
 
@@ -80,15 +82,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button:
+            case R.id.botonTokis:
                 contador.incrementAndGet();
-                Toast.makeText(getApplicationContext(), "Tokis repite " + contador.get()+ "asignaturas", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Tokis repite " + contador.get()+ " asignaturas", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.button2:
-                Intent intent = new Intent(this,Main2Activity.class);
+                System.out.println("CONTADOR: "+ contador.toString());
+                Intent intent = new Intent(this,Main22Activity.class);
+                intent.putExtra("ASIGNATURAS",contador.toString());
                 startActivity(intent);
                 break;
+
         }
     }
+
 }
