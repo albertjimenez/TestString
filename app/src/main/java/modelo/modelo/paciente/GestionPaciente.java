@@ -2,6 +2,7 @@ package modelo.modelo.paciente;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +19,13 @@ public class GestionPaciente implements Serializable {
         mapaPacientes = new ConcurrentHashMap<Integer, Paciente>();
         conjuntoIngresados = new HashSet<Paciente>();
     }
-
+    public GestionPaciente(boolean test) {
+        mapaPacientes = new ConcurrentHashMap<Integer, Paciente>();
+        conjuntoIngresados = new HashSet<Paciente>();
+        //TEST
+        if(test)
+            iniciarBase();
+    }
 
     public boolean addPaciente(Paciente unPaciente) {
 
@@ -133,5 +140,11 @@ public class GestionPaciente implements Serializable {
                     conjunto.add(p);
         }
         return conjunto;
+    }
+    private void iniciarBase() {
+        for (int i = 0; i < 10; i++)
+            addPaciente(new Paciente("Santi", "Bernabeuses", i,
+                    new GregorianCalendar(), "H", "Soltero",
+                    "Vinaros", "Castellon", 12500, "Franky"));
     }
 }

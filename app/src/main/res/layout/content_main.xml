@@ -20,14 +20,15 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/textView" />
 
+<!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/accion"
         android:id="@+id/botonTokis"
-        android:layout_marginTop="82dp"
         android:layout_below="@+id/textView"
-        android:layout_toStartOf="@+id/textView" />
+        android:layout_marginTop="71dp" />
+-->
 
     <ImageView
         android:layout_width="wrap_content"
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:text="@string/cadenaTokistica"
         android:id="@+id/button2"
-        android:layout_alignBottom="@+id/botonTokis"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp" />
 </RelativeLayout>

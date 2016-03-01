@@ -12,22 +12,44 @@
     tools:context="com.example.beruto.teststring.Main22Activity"
     tools:showIn="@layout/activity_main22">
 
-    <TextView
+
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tokis paquete ha suspendido:"
-        android:id="@+id/textView2"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/cajonSIP"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="91dp"
+        android:singleLine="true"
+        android:hint="SIP" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comprobar"
+        android:id="@+id/botonComprobar"
+        android:layout_alignTop="@+id/cajonSIP"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textoPaciente"
+        android:layout_below="@+id/botonComprobar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/botonComprobar" />
 
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visor de pacientes"
+        android:id="@+id/titulo"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

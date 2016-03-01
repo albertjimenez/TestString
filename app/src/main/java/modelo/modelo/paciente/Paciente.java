@@ -178,12 +178,4 @@ public class Paciente implements Serializable {
         return tipoIngreso;
     }
 
-	/*@Override
-    public int compareTo(Paciente o) {
-		if (this.getApellidos().compareTo(o.getApellidos()) > 1)
-			return 1;
-		else if (this.getApellidos().compareTo(o.getApellidos()) < 1)
-			return -1;
-		return 0;
-	}*/
 }

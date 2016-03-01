@@ -1,13 +1,10 @@
 <resources>
-    <string name="app_name">TestString</string>
+    <string name="app_name">Prueba pacientes</string>
     <string name="action_settings">Settings</string>
-    <string name="CadenaTexto">El Hadry</string>
+    <string name="CadenaTexto">Pacientes</string>
     <string name="accion">Tokis</string>
-    <string name="cadenaTokistica">Nuevo Intent</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="suspensas">Numero de asignaturas suspendidas por el tokis:</string>
-    <string name="textoBotonMA2">No funciono aún</string>
+    <string name="cadenaTokistica">Mostrar pacientes</string>
     <string name="title_activity_main22">Main22Activity</string>
     <string name="Actividad2Texto">Hola</string>
-    <string name="NumAsig">E</string>
+    <string name="Enunciado">Numero de pacientes:</string>
 </resources>
