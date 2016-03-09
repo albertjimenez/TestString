@@ -21,7 +21,7 @@
         <activity
             android:name=".Main22Activity"
             android:label="@string/title_activity_main22"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -40,6 +40,8 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             gestor = (GestionPaciente) bundle.get("GESTOR");
 
         botonComprobar.setOnClickListener(this);
+//        gestor.vaciar();
+//        guardarGestor();
 
 
     }
@@ -63,9 +65,9 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
                     textoPaciente.setText(p.toString2());
                 else if(sip>=0){
                     textoPaciente.setText("No existo...aún, pero lo añado");
-                    Paciente patient = new Paciente("Santi", "Hospitalero", sip,
-                            new GregorianCalendar(), "H", "Soltero",
-                            "Vinaros", "Castellon", 12500, "Franky");
+                    Paciente patient = new Paciente("Paciente ", "Apellido", sip,
+                            new GregorianCalendar(2000,1,16), "H", "Soltero",
+                            "Castellón", "Castellón", 12500, "Franky");
                     gestor.addPaciente(patient);
                     guardarGestor();
                     Toast.makeText(getApplicationContext(), "Paciente añadido", Toast.LENGTH_LONG).show();

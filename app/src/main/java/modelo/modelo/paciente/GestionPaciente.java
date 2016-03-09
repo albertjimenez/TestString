@@ -147,4 +147,8 @@ public class GestionPaciente implements Serializable {
                     new GregorianCalendar(), "H", "Soltero",
                     "Vinaros", "Castellon", 12500, "Franky"));
     }
+    public void vaciar(){
+        mapaPacientes.clear();
+        conjuntoIngresados.clear();
+    }
 }
