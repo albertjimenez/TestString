@@ -142,7 +142,7 @@ public class GestionPaciente implements Serializable {
         return conjunto;
     }
     private void iniciarBase() {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 3; i++)
             addPaciente(new Paciente("Santi", "Bernabeuses", i,
                     new GregorianCalendar(), "H", "Soltero",
                     "Vinaros", "Castellon", 12500, "Franky"));

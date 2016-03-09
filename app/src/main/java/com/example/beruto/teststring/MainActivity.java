@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.google.gson.Gson;
 
 import modelo.modelo.paciente.GestionPaciente;
@@ -23,33 +24,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GestionPaciente gestor;
     private final String BASE_DE_DATOS = "BD";
     private final String URI_SHAREDPREFERENCES = "GestionPaciente";
+    public static Firebase firebase;
+    public static String FIREBASE_URL = "https://gestion-hospital.firebaseio.com";
+    public static String FIREBASE_CHILD = "pacientes";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Firebase.setAndroidContext(this);
+        firebase= new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
         //inicializaciones de mis atributos
         //los rescato de content_main.xml para tener acceso
 
         etiquetaTexto = (TextView) findViewById(R.id.textView);
         boton = (Button) findViewById(R.id.button2);
         boton.setOnClickListener(this);
-        cargarGestor();
+        gestor = new GestionPaciente(true);
+        //cargarGestor();
     }
-    private void cargarGestor(){
-        Gson gson = new Gson();
-        SharedPreferences loader = getSharedPreferences("GestionPaciente", Context.MODE_PRIVATE);
-        String gestorJSON = loader.getString(BASE_DE_DATOS, "");
-        if(gestor==null)
-            gestor=new GestionPaciente();
-        else
-            gestor = gson.fromJson(gestorJSON,GestionPaciente.class);
-    }
+//    private void cargarGestor(){
+//        Gson gson = new Gson();
+//        SharedPreferences loader = getSharedPreferences("GestionPaciente", Context.MODE_PRIVATE);
+//        String gestorJSON = loader.getString(BASE_DE_DATOS, "");
+//        if(gestor==null)
+//            gestor=new GestionPaciente();
+//        else
+//            gestor = gson.fromJson(gestorJSON,GestionPaciente.class);
+//    }
     @Override
     protected void onResume() {
         super.onResume();
-        cargarGestor();
+       // cargarGestor();
     }
 
     @Override
@@ -85,5 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+
 
 }

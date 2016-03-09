@@ -11,7 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.GregorianCalendar;
 
@@ -25,10 +30,21 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
     private Button botonComprobar;
     private final String BASE_DE_DATOS = "BD";
     private final String URI_SHAREDPREFERENCES = "GestionPaciente";
+    private Firebase firebase = MainActivity.firebase;
+    public static String FIREBASE_URL = "https://gestion-hospital.firebaseio.com";
+    public static String FIREBASE_CHILD = "pacientes";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main22);
+
+        //FIREBASE
+
+        Firebase.setAndroidContext(this);
+        firebase = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
+
+        // FIN FIREBASE
+
         textoPaciente = (TextView) findViewById(R.id.textoPaciente);
         campoSIP = (EditText) findViewById(R.id.cajonSIP);
         botonComprobar = (Button) findViewById(R.id.botonComprobar);
@@ -40,6 +56,26 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             gestor = (GestionPaciente) bundle.get("GESTOR");
 
         botonComprobar.setOnClickListener(this);
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(getApplicationContext(), "Se ha actualizado desde el servidor", Toast.LENGTH_SHORT).show();
+                String gestorJSON = dataSnapshot.getValue().toString();
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                GestionPaciente gestorAux = gestor;
+                try{
+                    gestor = gson.fromJson(gestorJSON,GestionPaciente.class);
+                }catch (Exception e){
+                    gestor = gestorAux;
+                    Toast.makeText(getApplicationContext(), "Ha habido un error desde el servidor", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 //        gestor.vaciar();
 //        guardarGestor();
 
@@ -69,8 +105,10 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
                             new GregorianCalendar(2000,1,16), "H", "Soltero",
                             "Castellón", "Castellón", 12500, "Franky");
                     gestor.addPaciente(patient);
-                    guardarGestor();
-                    Toast.makeText(getApplicationContext(), "Paciente añadido", Toast.LENGTH_LONG).show();
+                    guardarFireBase();
+                    //guardarGestor();
+
+                    Toast.makeText(getApplicationContext(), "Paciente añadido a FireBase", Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getApplicationContext(), "Negativos no, gracias", Toast.LENGTH_LONG).show();
@@ -82,13 +120,21 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
         modelo();
     }
 
-    private void guardarGestor(){
-        SharedPreferences loader = getSharedPreferences(URI_SHAREDPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = loader.edit();
-        Gson gson = new Gson();
-        String gestorJSON = gson.toJson(gestor,GestionPaciente.class);
-        editor.putString(BASE_DE_DATOS,gestorJSON);
-        editor.commit();
+//    private void guardarGestor(){
+//        SharedPreferences loader = getSharedPreferences(URI_SHAREDPREFERENCES, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = loader.edit();
+//        Gson gson = new Gson();
+//        String gestorJSON = gson.toJson(gestor,GestionPaciente.class);
+//        editor.putString(BASE_DE_DATOS,gestorJSON);
+//        editor.commit();
+//    }
+
+    private void guardarFireBase(){
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String miGestorJSON = gson.toJson(gestor,GestionPaciente.class);
+        firebase.setValue(miGestorJSON);
     }
+
+
 }
 
