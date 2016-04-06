@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
@@ -30,5 +30,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.firebase:firebase-client-android:2.5.2+'
-
+    compile files('libs/generadorNombres.jar')
 }

@@ -13,16 +13,12 @@ public class Paciente implements Serializable {
     private String nombre;
     private String apellidos;
     private int SIP; // 8 cifras
-
     private Calendar fechaNacimiento;
     private String sexo;
-    private String estado;
-    private String poblacion;
-    private String provincia;
     private int CP;
-    private String doctor;
     private List<Ingreso> ingresos = new ArrayList<Ingreso>();
-    private String tipoIngreso;
+    //private String tipoIngreso;
+    private boolean estaIngresado;
 
     /*
     *
@@ -31,23 +27,17 @@ public class Paciente implements Serializable {
     *
      */
     // Constructor
-    public Paciente(String nombre, String apellidos, int sIP, Calendar fechaNacimiento, String sexo, String estado,
-                    String poblacion, String provincia, int cP, String doctor) {
+    public Paciente(String nombre, String apellidos, int sIP, Calendar fechaNacimiento, String sexo,
+                    int cP) {
         super();
         this.nombre = nombre;
         this.apellidos = apellidos;
         SIP = sIP;
         this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
-        this.estado = estado;
-        this.poblacion = poblacion;
-        this.provincia = provincia;
         CP = cP;
-        this.doctor = doctor;
-        // this.tipoIngreso = tipoIngreso;
-        // ++Paciente.numHistoria;
+        this.estaIngresado = false;
 
-        // ingresos.add(new Ingreso(ingreso, tipoIngreso));
     }
 
     // metodos
@@ -57,16 +47,15 @@ public class Paciente implements Serializable {
     *
     * @return Verdadero falso segun el resultado
      */
-    @Override
-    public boolean equals(Object obj) {
-        try {
-            Paciente p = (Paciente) obj;
-            return this.SIP == p.SIP;
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
+//    public boolean equals(Object obj) {
+//        try {
+//            Paciente p = (Paciente) obj;
+//            return this.SIP == p.SIP;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//
+//    }
 
     // @Override
     public String toString2() {
@@ -77,9 +66,8 @@ public class Paciente implements Serializable {
         else
             ing = ingresos.toString();
         return "\nNombre: " + nombre + "\nApellidos: " + apellidos + "\nSIP: " + SIP + "\nFecha de nacimiento: "
-                + formateador.format(fechaNacimiento.getTime()) + "\nSexo: " + sexo + "\nEstado: " + estado
-                + "\nPoblación: " + poblacion + "\nProvíncia: " + provincia + "\nCP: " + CP + "\nDoctor: " + doctor
-                + "\n======================\n: " + ing;
+                + formateador.format(fechaNacimiento.getTime()) + "\nSexo: " + sexo
+                + "\nCP: " + CP + "\n======================\n: " + ing;
     }
 
     @Override
@@ -123,30 +111,6 @@ public class Paciente implements Serializable {
         this.sexo = sexo;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getPoblacion() {
-        return poblacion;
-    }
-
-    public void setPoblacion(String poblacion) {
-        this.poblacion = poblacion;
-    }
-
-    public String getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
-
     public int getCP() {
         return CP;
     }
@@ -155,27 +119,42 @@ public class Paciente implements Serializable {
         CP = cP;
     }
 
-    public String getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(String doctor) {
-        this.doctor = doctor;
-    }
 
     public List<Ingreso> getIngresos() {
         return ingresos;
     }
 
+    public boolean isEstaIngresado() {
+        return estaIngresado;
+    }
+
+    public void setEstaIngresado(boolean estaIngresado) {
+        this.estaIngresado = estaIngresado;
+    }
+
     public String toStringAntiIngresos() {
         SimpleDateFormat formateador = new SimpleDateFormat("dd'/'MM'/'yyyy", new Locale("es_ES"));
         return "Nombre: " + nombre + " Apellidos: " + apellidos + " SIP: " + SIP + " Fecha de nacimiento: "
-                + formateador.format(fechaNacimiento.getTime()) + " Sexo: " + sexo + " Estado: " + estado
-                + " Población: " + poblacion + " Província: " + provincia + " CP: " + CP + " Doctor: " + doctor;
+                + formateador.format(fechaNacimiento.getTime()) + " Sexo: " + sexo
+                +" CP: " + CP ;
     }
 
-    public String getTipoIngreso() {
-        return tipoIngreso;
+
+    public boolean equals(Object obj){
+        try {
+            Paciente p = (Paciente) obj;
+            return this.nombre.equals(p.nombre)&&
+                    this.apellidos.equals(p.apellidos) &&
+                    this.SIP == p.SIP &&
+                    this.fechaNacimiento.equals(p.fechaNacimiento) &&
+                    this.sexo.equals(p.sexo)&&
+                    this.CP == p.CP &&
+                    this.ingresos.equals(p.ingresos) &&
+                    this.estaIngresado == p.estaIngresado;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
 }

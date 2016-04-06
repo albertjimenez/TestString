@@ -115,7 +115,7 @@ public class GestionPaciente implements Serializable {
     }
 
 
-    public Set<Paciente> devolverPacientes() {
+    public HashSet<Paciente> devolverPacientes() {
 
         return conjuntoIngresados;
     }
@@ -130,9 +130,16 @@ public class GestionPaciente implements Serializable {
         return mapaPacientes.values().size();
     }
 
+    public void setConjuntoIngresados(HashSet<Paciente> conjuntoIngresados) {
+        this.conjuntoIngresados = conjuntoIngresados;
+    }
 
-    public Set<Paciente> buscarNombre(String pattern) {
-        Set<Paciente> conjunto = new HashSet<Paciente>();
+    public void setMapaPacientes(ConcurrentHashMap<Integer, Paciente> mapaPacientes) {
+        this.mapaPacientes = mapaPacientes;
+    }
+
+    public HashSet<Paciente> buscarNombre(String pattern) {
+        HashSet<Paciente> conjunto = new HashSet<Paciente>();
         if (!mapaPacientes.isEmpty()) {
             for (Paciente p : mapaPacientes.values())
                 if (p.getApellidos().toLowerCase().equals(pattern.toLowerCase())
@@ -144,8 +151,7 @@ public class GestionPaciente implements Serializable {
     private void iniciarBase() {
         for (int i = 0; i < 3; i++)
             addPaciente(new Paciente("Santi", "Bernabeuses", i,
-                    new GregorianCalendar(), "H", "Soltero",
-                    "Vinaros", "Castellon", 12500, "Franky"));
+                    new GregorianCalendar(), "H", 12500));
     }
     public void vaciar(){
         mapaPacientes.clear();

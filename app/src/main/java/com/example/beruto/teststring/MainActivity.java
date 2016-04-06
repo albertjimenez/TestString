@@ -1,8 +1,6 @@
 package com.example.beruto.teststring;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,20 +11,25 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
-import com.google.gson.Gson;
 
 import modelo.modelo.paciente.GestionPaciente;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView etiquetaTexto;
-    private Button boton;
+    private Button botonMuestraPacientes;
+    private Button botonCrearPacientes;
     private GestionPaciente gestor;
-    private final String BASE_DE_DATOS = "BD";
-    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
-    public static Firebase firebase;
+//    private final String BASE_DE_DATOS = "BD";
+//    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
+    public static Firebase firebaseGestionHospital;
+
     public static String FIREBASE_URL = "https://gestion-hospital.firebaseio.com";
-    public static String FIREBASE_CHILD = "pacientes";
+    public static String FIREBASE_CHILD = "EstructuraDeDatos";
+    public static String FIREBASE_CHILD_SIP = "pacientes";
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Firebase.setAndroidContext(this);
-        firebase= new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
+        firebaseGestionHospital= new Firebase(FIREBASE_URL);
         //inicializaciones de mis atributos
         //los rescato de content_main.xml para tener acceso
 
         etiquetaTexto = (TextView) findViewById(R.id.textView);
-        boton = (Button) findViewById(R.id.button2);
-        boton.setOnClickListener(this);
-        gestor = new GestionPaciente(true);
+        botonMuestraPacientes = (Button) findViewById(R.id.button2);
+        botonMuestraPacientes.setOnClickListener(this);
+        botonCrearPacientes = (Button) findViewById(R.id.button);
+        botonCrearPacientes.setOnClickListener(this);
+        gestor = new GestionPaciente();
         //cargarGestor();
     }
 //    private void cargarGestor(){
@@ -89,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(this,Main22Activity.class);
                 intent.putExtra("GESTOR",gestor);
                 startActivity(intent);
+                break;
+            case R.id.button:
+                Intent intent1 = new Intent(this,CrearPaciente.class);
+                startActivity(intent1);
                 break;
 
         }
