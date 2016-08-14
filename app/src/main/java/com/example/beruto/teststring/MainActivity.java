@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import modelo.modelo.paciente.GestionPaciente;
 
@@ -22,12 +23,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GestionPaciente gestor;
 //    private final String BASE_DE_DATOS = "BD";
 //    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
-    public static Firebase firebaseGestionHospital;
 
-    public static String FIREBASE_URL = "https://gestion-hospital.firebaseio.com";
-    public static String FIREBASE_CHILD = "EstructuraDeDatos";
-    public static String FIREBASE_CHILD_SIP = "pacientes";
 
+    public static String FIREBASE_URL = "https://console.firebase.google.com/project/validadorgesthosp";
+    public static String FIREBASE_ED = "EstructuraDeDatos";
+    public static String FIREBASE_PACIENTES = "pacientes";
+
+    public static FirebaseDatabase firebaseGestionHospital = FirebaseDatabase.getInstance();
+
+    public static DatabaseReference dataPaciente;
+
+    public static DatabaseReference dataED;
 
 
 
@@ -37,10 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Firebase.setAndroidContext(this);
-        firebaseGestionHospital= new Firebase(FIREBASE_URL);
-        //inicializaciones de mis atributos
-        //los rescato de content_main.xml para tener acceso
+
+        dataPaciente = firebaseGestionHospital.getReference().child(FIREBASE_PACIENTES);
+        dataED = firebaseGestionHospital.getReference().child(FIREBASE_ED);
+        dataED.keepSynced(true);
+        dataPaciente.keepSynced(true);
+
 
         etiquetaTexto = (TextView) findViewById(R.id.textView);
         botonMuestraPacientes = (Button) findViewById(R.id.button2);
@@ -97,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button:
                 Intent intent1 = new Intent(this,CrearPaciente.class);
+                intent1.putExtra("GESTOR2",gestor);
                 startActivity(intent1);
                 break;
 

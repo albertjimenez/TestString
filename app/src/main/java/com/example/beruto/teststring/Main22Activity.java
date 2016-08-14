@@ -1,8 +1,6 @@
 package com.example.beruto.teststring;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,17 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.concurrent.ConcurrentHashMap;
 
 import es.uji.www.GeneradorDatosINE;
 import modelo.modelo.paciente.GestionPaciente;
@@ -35,25 +31,17 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
 //    private final String BASE_DE_DATOS = "BD";
 //    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
 
-    private Firebase firebase = MainActivity.firebaseGestionHospital;
-    private Firebase firebasePacientes;
-    public final String FIREBASE_URL = MainActivity.FIREBASE_URL;
-    public  final String FIREBASE_CHILD = MainActivity.FIREBASE_CHILD;
-    public  final String FIREBASE_CHILD_SIP = MainActivity.FIREBASE_CHILD_SIP;
+    private DatabaseReference dataED = MainActivity.dataED;
+    private DatabaseReference dataPaciente = MainActivity.dataPaciente;
+//    public final String FIREBASE_URL = MainActivity.FIREBASE_URL;
+//    public  final String FIREBASE_CHILD = MainActivity.FIREBASE_ED;
+//    public  final String FIREBASE_CHILD_SIP = MainActivity.FIREBASE_PACIENTES;
     GeneradorDatosINE generadorDatosINE = new GeneradorDatosINE();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main22);
 
-
-        //FIREBASE
-
-        Firebase.setAndroidContext(this);
-        firebase = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD);
-        firebasePacientes = new Firebase(FIREBASE_URL).child(FIREBASE_CHILD_SIP);
-
-        // FIN FIREBASE
 
         textoPaciente = (TextView) findViewById(R.id.textoPaciente);
         campoSIP = (EditText) findViewById(R.id.cajonSIP);
@@ -68,10 +56,11 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
         }
 
         botonComprobar.setOnClickListener(this);
-        firebase.addValueEventListener(new ValueEventListener() {
+
+
+        dataED.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Toast.makeText(getApplicationContext(), "Se ha actualizado desde el servidor", Toast.LENGTH_SHORT).show();
                 Gson gson = new Gson();
                 String gestorJSON = "";
                 if (dataSnapshot.getValue() != null) {
@@ -90,12 +79,12 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        firebasePacientes.addChildEventListener(new ChildEventListener() {
 
+        dataPaciente.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -128,10 +117,12 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
 //        gestor.vaciar();
 //        guardarGestor();
 
@@ -189,13 +180,13 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
     private void guardarFireBase(){
         Gson gson = new Gson();
         String miGestorJSON = gson.toJson(gestor,GestionPaciente.class);
-        firebase.setValue(miGestorJSON);
+        dataED.setValue(miGestorJSON);
     }
     private void guardarPaciente(Paciente paciente){
         Gson gson = new Gson();
         String miPacienteJSON = gson.toJson(paciente, Paciente.class);
         Integer sipPaciente = paciente.getSIP();
-        firebasePacientes.child(sipPaciente.toString()).setValue(miPacienteJSON);
+        dataPaciente.child(sipPaciente.toString()).setValue(miPacienteJSON);
     }
 
 

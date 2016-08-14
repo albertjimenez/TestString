@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +28,10 @@ public class Paciente implements Serializable {
     *
      */
     // Constructor
-    public Paciente(String nombre, String apellidos, int sIP, Calendar fechaNacimiento, String sexo,
+    public Paciente(){
+
+    }
+    public Paciente(String nombre, String apellidos, int sIP, GregorianCalendar fechaNacimiento, String sexo,
                     int cP) {
         super();
         this.nombre = nombre;
