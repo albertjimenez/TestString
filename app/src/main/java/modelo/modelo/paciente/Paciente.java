@@ -13,11 +13,11 @@ public class Paciente implements Serializable {
     // Atributos
     private String nombre;
     private String apellidos;
-    private int SIP; // 8 cifras
+    private int dni; // 8 cifras
     private Calendar fechaNacimiento;
     private String sexo;
     private int CP;
-    private List<Ingreso> ingresos = new ArrayList<Ingreso>();
+    private ArrayList<Ingreso> ingresos = new ArrayList<Ingreso>();
     //private String tipoIngreso;
     private boolean estaIngresado;
 
@@ -36,7 +36,7 @@ public class Paciente implements Serializable {
         super();
         this.nombre = nombre;
         this.apellidos = apellidos;
-        SIP = sIP;
+        dni = sIP;
         this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
         CP = cP;
@@ -54,7 +54,7 @@ public class Paciente implements Serializable {
 //    public boolean equals(Object obj) {
 //        try {
 //            Paciente p = (Paciente) obj;
-//            return this.SIP == p.SIP;
+//            return this.dni == p.dni;
 //        } catch (Exception e) {
 //            return false;
 //        }
@@ -69,14 +69,14 @@ public class Paciente implements Serializable {
             ing = "No hay ingresos registrados";
         else
             ing = ingresos.toString();
-        return "\nNombre: " + nombre + "\nApellidos: " + apellidos + "\nSIP: " + SIP + "\nFecha de nacimiento: "
+        return "\nNombre: " + nombre + "\nApellidos: " + apellidos + "\ndni: " + dni + Medico.calcularLetraDNI(dni) + "\nFecha de nacimiento: "
                 + formateador.format(fechaNacimiento.getTime()) + "\nSexo: " + sexo
                 + "\nCP: " + CP + "\n======================\n: " + ing;
     }
 
     @Override
     public String toString() {
-        return this.nombre + " " + this.apellidos + " SIP: " + this.SIP;
+        return this.nombre + " " + this.apellidos + " dni: " + this.dni;
     }
 
     public String getNombre() {
@@ -95,8 +95,8 @@ public class Paciente implements Serializable {
         this.apellidos = apellidos;
     }
 
-    public int getSIP() {
-        return SIP;
+    public int getDni() {
+        return dni;
     }
 
     public Calendar getFechaNacimiento() {
@@ -124,7 +124,7 @@ public class Paciente implements Serializable {
     }
 
 
-    public List<Ingreso> getIngresos() {
+    public ArrayList<Ingreso> getIngresos() {
         return ingresos;
     }
 
@@ -138,7 +138,7 @@ public class Paciente implements Serializable {
 
     public String toStringAntiIngresos() {
         SimpleDateFormat formateador = new SimpleDateFormat("dd'/'MM'/'yyyy", new Locale("es_ES"));
-        return "Nombre: " + nombre + " Apellidos: " + apellidos + " SIP: " + SIP + " Fecha de nacimiento: "
+        return "Nombre: " + nombre + " Apellidos: " + apellidos + " dni: " + dni + " Fecha de nacimiento: "
                 + formateador.format(fechaNacimiento.getTime()) + " Sexo: " + sexo
                 +" CP: " + CP ;
     }
@@ -149,7 +149,7 @@ public class Paciente implements Serializable {
             Paciente p = (Paciente) obj;
             return this.nombre.equals(p.nombre)&&
                     this.apellidos.equals(p.apellidos) &&
-                    this.SIP == p.SIP &&
+                    this.dni == p.dni &&
                     this.fechaNacimiento.equals(p.fechaNacimiento) &&
                     this.sexo.equals(p.sexo)&&
                     this.CP == p.CP &&

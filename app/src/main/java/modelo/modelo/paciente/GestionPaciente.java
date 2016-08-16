@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -29,7 +28,7 @@ public class GestionPaciente implements Serializable {
 
     public boolean addPaciente(Paciente unPaciente) {
 
-        int clave = unPaciente.getSIP();
+        int clave = unPaciente.getDni();
         Paciente p = mapaPacientes.putIfAbsent(clave, unPaciente);
         return p == null;
 
@@ -51,7 +50,7 @@ public class GestionPaciente implements Serializable {
 
     public boolean removePaciente(Paciente unPaciente) {
 
-        int clave = unPaciente.getSIP();
+        int clave = unPaciente.getDni();
 
         if (!mapaPacientes.containsKey(clave))
             return false;
@@ -62,7 +61,7 @@ public class GestionPaciente implements Serializable {
 
 
     public boolean editPaciente(Paciente unPaciente) {
-        int clave = unPaciente.getSIP();
+        int clave = unPaciente.getDni();
         Paciente viejoPaciente = mapaPacientes.get(clave);
         if (!mapaPacientes.containsKey(clave))
             return false;
