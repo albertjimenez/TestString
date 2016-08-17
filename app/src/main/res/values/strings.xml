@@ -101,4 +101,8 @@
     <!--<string name="title_activity_crea__pacientes">Crea_Pacientes</string>-->
     <string name="title_activity_crear_paciente">Insertar Nuevo Paciente</string>
     <string name="textNombre">Nombre:</string>
+    <string name="sesionGoogle">Iniciar Sesión en Google</string>
+    <string name="resumenIntro">Bienvenido a gestión hospital, como médico debes autentificarte, de esta forma accederás a tu lista de pacientes.</string>
+    <string name="tokenText">705749104307-voc4aopgepcd5vm40ioj0vmsgas5pm7v.apps.googleusercontent.com</string>
+    <string name="tokenText2">705749104307-gqsh9fpikf486bts3gahfmkecktc58kc.apps.googleusercontent.com</string>
 </resources>

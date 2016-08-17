@@ -23,4 +23,6 @@
     <style name="SantiHospitalTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="SantiHospitalTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="NiuSantiHospitalTheme" parent="SantiHospitalTheme" />
+
 </resources>

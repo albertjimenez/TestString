@@ -3,8 +3,10 @@ package com.example.beruto.teststring;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static DatabaseReference dataPaciente;
 
     public static DatabaseReference dataED;
+    private Bundle bundle;
 
 
     @Override
@@ -52,14 +58,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        firebaseGestionHospital.setPersistenceEnabled(true);
-        //Niu Metodo
-        if (checkPlayServices())
-            Toast.makeText(MainActivity.this, "Servicios de google Play activos", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(MainActivity.this, "Servicios de google Play deshabilitados", Toast.LENGTH_SHORT).show();
+        //firebaseGestionHospital.setPersistenceEnabled(true);
 
-            dataPaciente = firebaseGestionHospital.getReference().child(FIREBASE_PACIENTES);
+
+        bundle = getIntent().getExtras();
+
+
+        dataPaciente = firebaseGestionHospital.getReference().child(FIREBASE_PACIENTES);
         dataED = firebaseGestionHospital.getReference().child(FIREBASE_ED);
         dataED.keepSynced(true);
         dataPaciente.keepSynced(true);
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //cargarGestor();
     }
 
+
+
+
+
     //    private void cargarGestor(){
 //        Gson gson = new Gson();
 //        SharedPreferences loader = getSharedPreferences("GestionPaciente", Context.MODE_PRIVATE);
@@ -87,6 +96,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         // cargarGestor();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == event.KEYCODE_BACK) {
+//            MyLoginActivity.mAuth.signOut();
+            finish();
+        }
+        return true;
     }
 
     @Override
@@ -144,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (gApi.isUserResolvableError(resultCode)) {
                 gApi.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Toast.makeText(this, getResources().getString(R.string.common_google_play_services_api_unavailable_text), Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, getResources().getString(R.string.common_google_play_services_api_unavailable_text), Toast.LENGTH_LONG).show();
                 finish();
             }
             return false;

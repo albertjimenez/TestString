@@ -21,6 +21,7 @@ import modelo.modelo.paciente.Paciente;
 
 public class CrearPaciente extends AppCompatActivity {
     //TODO comprobar repetidos DNI, y calcular letra
+    //TODO el gestor almacena el SIP como string y yo individualmente lo hago como INT! vigila eso
     private GestionPaciente gestor;
     private DatabaseReference dataED = MainActivity.dataED;
     private DatabaseReference dataPaciente = MainActivity.dataPaciente;

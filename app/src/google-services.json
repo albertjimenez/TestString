@@ -1,65 +1,21 @@
 {
   "project_info": {
-    "project_number": "1045978862193",
-    "firebase_url": "https://validadorgesthosp.firebaseio.com",
-    "project_id": "validadorgesthosp",
-    "storage_bucket": "validadorgesthosp.appspot.com"
+    "project_number": "821666023381",
+    "firebase_url": "https://gestionhospital-95320.firebaseio.com",
+    "project_id": "gestionhospital-95320",
+    "storage_bucket": "gestionhospital-95320.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1045978862193:android:d9f68615ed7059e9",
-        "android_client_info": {
-          "package_name": "verify.albert.com.verificadordelicencias"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1045978862193-551q3id8795bg9ebfdf5jlprlnn3nb8j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "verify.albert.com.verificadordelicencias",
-            "certificate_hash": "9213AE0520917CE4F114D103FA8FEE64DA2CCE3D"
-          }
-        },
-        {
-          "client_id": "1045978862193-hlrqopo1930je5kt4h2k8ts916fhj3ft.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDvbj6J1VZXtOgKESskQPW7tb8CKYzmUIo"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1045978862193-hlrqopo1930je5kt4h2k8ts916fhj3ft.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1045978862193:android:0ee66aa2887d2d49",
+        "mobilesdk_app_id": "1:821666023381:android:0ee66aa2887d2d49",
         "android_client_info": {
           "package_name": "com.example.beruto.teststring"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1045978862193-q833o9r7n7bpsodkoqvhnkhkvkb84cu4.apps.googleusercontent.com",
+          "client_id": "821666023381-up2o5ovfhgbc25k0vh3rsm4u6adg0fre.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.beruto.teststring",
@@ -67,13 +23,13 @@
           }
         },
         {
-          "client_id": "1045978862193-hlrqopo1930je5kt4h2k8ts916fhj3ft.apps.googleusercontent.com",
+          "client_id": "821666023381-chac9gkoa69fgf4bv5fuf22gkvu9ujbe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDvbj6J1VZXtOgKESskQPW7tb8CKYzmUIo"
+          "current_key": "AIzaSyCMBbjHelhvzNOWsusWBjCXK-r1BlXEGz0"
         }
       ],
       "services": {
@@ -84,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1045978862193-hlrqopo1930je5kt4h2k8ts916fhj3ft.apps.googleusercontent.com",
+              "client_id": "821666023381-chac9gkoa69fgf4bv5fuf22gkvu9ujbe.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
