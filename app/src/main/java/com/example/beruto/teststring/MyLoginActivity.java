@@ -64,8 +64,9 @@ public class MyLoginActivity extends AppCompatActivity implements GoogleApiClien
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent unIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent unIntent = new Intent(MyLoginActivity.this, MainActivity.class);
                     unIntent.putExtra("NOMBRE", user.getDisplayName());
+                    unIntent.putExtra("FOTO", user.getPhotoUrl().toString());
                     startActivity(unIntent);
                 }
             }

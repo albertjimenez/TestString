@@ -2,6 +2,7 @@ package com.example.beruto.teststring;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static DatabaseReference dataED;
     private Bundle bundle;
+    private String nombreUsuario;
+    private String urlUsuario;
 
 
     @Override
@@ -59,10 +64,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //firebaseGestionHospital.setPersistenceEnabled(true);
+        TextView usuario = (TextView) findViewById(R.id.profileName);
+        ImageView imagen = (ImageView) findViewById(R.id.profilePicture);
 
 
         bundle = getIntent().getExtras();
-
+        if(bundle!=null){
+            nombreUsuario = bundle.getString("NOMBRE");
+            urlUsuario = bundle.getString("FOTO");
+            usuario.setText(nombreUsuario);
+            Glide.with(this).load(urlUsuario).into(imagen);
+        }
 
         dataPaciente = firebaseGestionHospital.getReference().child(FIREBASE_PACIENTES);
         dataED = firebaseGestionHospital.getReference().child(FIREBASE_ED);
