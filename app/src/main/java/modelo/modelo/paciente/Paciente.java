@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -106,6 +108,24 @@ public class Paciente implements Serializable {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+//    public boolean addMedico(Medico m){
+//
+//        if(listaMedicos.contains(m))
+//            return false;
+//        listaMedicos.add(m);
+//        return true;
+//
+//    }
+//
+//    public boolean removeMedico(Medico m){
+//        if(!listaMedicos.contains(m))
+//            return false;
+//        listaMedicos.remove(m);
+//        return true;
+//    }
+//
+
 
     public String getSexo() {
         return sexo;

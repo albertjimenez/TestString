@@ -19,22 +19,27 @@ import com.google.gson.Gson;
 
 import java.util.GregorianCalendar;
 
+import modelo.modelo.paciente.GestionMedicos;
 import modelo.modelo.paciente.GestionPaciente;
 import modelo.modelo.paciente.ImplementacionCallback;
 import modelo.modelo.paciente.InterfazCallback;
+import modelo.modelo.paciente.Medico;
 import modelo.modelo.paciente.Paciente;
 
 public class Main22Activity extends AppCompatActivity implements View.OnClickListener, InterfazCallback {
     private GestionPaciente gestor;
+//    private GestionMedicos gestionMedicos;
     private TextView textoPaciente;
     private EditText campoSIP;
     private Button botonComprobar;
     private ImplementacionCallback implementacionCallback = new ImplementacionCallback(this);
+    private Gson gson;
 //    private final String BASE_DE_DATOS = "BD";
 //    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
 
     private DatabaseReference dataED = MainActivity.dataED;
     private DatabaseReference dataPaciente = MainActivity.dataPaciente;
+    private DatabaseReference dataMedico = MainActivity.dataMedicos;
 
     //    public final String FIREBASE_URL = MainActivity.FIREBASE_URL;
 //    public  final String FIREBASE_CHILD = MainActivity.FIREBASE_ED;
@@ -45,7 +50,7 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main22);
 
-
+        gson = new Gson();
         textoPaciente = (TextView) findViewById(R.id.textoPaciente);
         campoSIP = (EditText) findViewById(R.id.cajonSIP);
         botonComprobar = (Button) findViewById(R.id.botonComprobar);
@@ -55,11 +60,26 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
 
         if (bundle != null) {
             gestor = (GestionPaciente) bundle.get("GESTOR");
-
+//            gestionMedicos = (GestionMedicos) bundle.get("GESTORM");
         }
 
         botonComprobar.setOnClickListener(this);
 
+
+//        dataMedico.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//              if(dataSnapshot.getValue()!=null)
+//                  gestionMedicos = (GestionMedicos) gson.fromJson(dataSnapshot.getValue().toString(), GestionMedicos.class);
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         dataED.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,9 +116,10 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Paciente p = new Gson().fromJson(dataSnapshot.getValue().toString(), Paciente.class);
-                if (gestor.editPaciente(p))
+                //TODO notificar
+               // if (gestor.editPaciente(p))
 //                    Toast.makeText(getApplicationContext(), "Se ha editado " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
-                    notificame(p);
+                 //   notificame(p);
 
 //                else
 //                    Toast.makeText(getApplicationContext(), "No se ha podido editar " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
@@ -159,7 +180,7 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
                 String apellido = "Bernabeuses";
                 textoPaciente.setText("No existo...aún, pero lo añado");
                 Paciente patient = new Paciente(nombre, apellido, sip,
-                        new GregorianCalendar(2000, 1, 16), "H", 12500);
+                        new GregorianCalendar(2000, 1, 16), "H", 12500 );
                 gestor.addPaciente(patient);
                 guardarFireBase();
                 guardarPaciente(patient);
@@ -198,16 +219,15 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
         dataPaciente.child(sipPaciente.toString()).setValue(miPacienteJSON);
     }
 
-
+    //TODO Se avisara a todos menos a él mismo
     @Override
-    public void notificame(Paciente paciente) {
+    public void notificame(Medico medico) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Atención");
-        alertDialogBuilder.setMessage("Se ha modificado:\n" + paciente.toString());
+        alertDialogBuilder.setMessage("Se ha modificado el medico:\n" + medico.toString());
         alertDialogBuilder.setPositiveButton("Ok", null);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 }
 

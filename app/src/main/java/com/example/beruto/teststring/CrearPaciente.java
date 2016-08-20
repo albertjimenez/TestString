@@ -10,12 +10,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.GregorianCalendar;
 
+import modelo.modelo.paciente.GestionMedicos;
 import modelo.modelo.paciente.GestionPaciente;
+import modelo.modelo.paciente.Medico;
 import modelo.modelo.paciente.Paciente;
 
 
@@ -23,8 +29,13 @@ public class CrearPaciente extends AppCompatActivity {
     //TODO comprobar repetidos DNI, y calcular letra
     //TODO el gestor almacena el SIP como string y yo individualmente lo hago como INT! vigila eso
     private GestionPaciente gestor;
+//    private GestionMedicos gestionMedicos;
     private DatabaseReference dataED = MainActivity.dataED;
     private DatabaseReference dataPaciente = MainActivity.dataPaciente;
+    private DatabaseReference dataMedico = MainActivity.dataMedicos;
+    //FirebaseAuth
+    private FirebaseAuth mAuth = MyLoginActivity.mAuth;
+
 
     private EditText textNombre;
     private EditText textApellido;
@@ -51,13 +62,16 @@ public class CrearPaciente extends AppCompatActivity {
         radioHombre = (RadioButton) findViewById(R.id.radioButtonHombre);
         radioMujer = (RadioButton) findViewById(R.id.radioButtonMujer);
 
+
         //TODO
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        if (bundle != null)
+        if (bundle != null) {
             gestor = (GestionPaciente) bundle.get("GESTOR2");
+//            gestionMedicos = new GestionMedicos();
+        }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -95,7 +109,25 @@ public class CrearPaciente extends AppCompatActivity {
 
             }
         });
+
     }
+
+//        dataMedico.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.getValue()!=null)
+//                    gestionMedicos = (GestionMedicos) new Gson().fromJson(dataSnapshot.getValue().toString(), GestionMedicos.class);
+//                else
+//                    gestionMedicos = new GestionMedicos();
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 
     private boolean creaPaciente(String nombre, String apellidos, String sip, String cp, String sexo) {
@@ -107,6 +139,14 @@ public class CrearPaciente extends AppCompatActivity {
         if (SIP_CHECKED != -1 && CP_CHECKED != -1) {
             Paciente p = new Paciente(nombre, apellidos, SIP_CHECKED, new GregorianCalendar(), sexo, CP_CHECKED);
             gestor.addPaciente(p);
+//            gestionMedicos.addMedico(new Medico(
+//                    mAuth.getCurrentUser().getDisplayName(),
+//                    mAuth.getCurrentUser().getUid(),
+//                    mAuth.getCurrentUser().getPhotoUrl().toString()),
+//                    p);
+
+//            dataMedico.setValue(gson.toJson(gestionMedicos));
+
             dataED.setValue(gson.toJson(gestor));
             dataPaciente.child(sip).setValue(gson.toJson(p));
             return true;

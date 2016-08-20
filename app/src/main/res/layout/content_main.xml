@@ -16,7 +16,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cadenaTokistica"
+        android:text="@string/textoBuscar"
         android:id="@+id/button2"
         android:layout_marginTop="137dp"
         android:layout_alignParentTop="true"
@@ -60,6 +60,7 @@
         android:minHeight="64dp"
         android:minWidth="64dp"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/button2" />
+        android:layout_alignEnd="@+id/button2"
+        android:clickable="true" />
 
 </RelativeLayout>

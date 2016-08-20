@@ -1,10 +1,12 @@
 package com.example.beruto.teststring;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -17,16 +19,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import modelo.modelo.paciente.GestionMedicos;
 import modelo.modelo.paciente.GestionPaciente;
 
 
@@ -34,27 +40,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView etiquetaTexto;
     private Button botonMuestraPacientes;
     private Button botonCrearPacientes;
+    private ImageView imagen;
     private GestionPaciente gestor;
+    //    private GestionMedicos gestionMedicos;
     private final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private FirebaseAuth mAuth;
 
-
-
-//    private final String BASE_DE_DATOS = "BD";
-//    private final String URI_SHAREDPREFERENCES = "GestionPaciente";
-
-
-//    public static String FIREBASE_URL = "https://console.firebase.google.com/project/validadorgesthosp";
-    public static String FIREBASE_ED = "EstructuraDeDatos";
-    public static String FIREBASE_PACIENTES = "pacientes";
+    public final static String FIREBASE_ED = "EstructuraDeDatos";
+    public final static String FIREBASE_PACIENTES = "pacientes";
+    public final static String FIREBASE_MEDICOS = "medicos";
 
     public static FirebaseDatabase firebaseGestionHospital = FirebaseDatabase.getInstance();
 
     public static DatabaseReference dataPaciente;
 
     public static DatabaseReference dataED;
+
+    public static DatabaseReference dataMedicos;
     private Bundle bundle;
     private String nombreUsuario;
     private String urlUsuario;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private String mCurrentPhotoPath;
 
 
     @Override
@@ -65,45 +73,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         //firebaseGestionHospital.setPersistenceEnabled(true);
         TextView usuario = (TextView) findViewById(R.id.profileName);
-        ImageView imagen = (ImageView) findViewById(R.id.profilePicture);
+        imagen = (ImageView) findViewById(R.id.profilePicture);
+        imagen.setOnClickListener(this);
 
 
+        //Recupera Datos MyLoginActivity
         bundle = getIntent().getExtras();
-        if(bundle!=null){
+        if (bundle != null) {
             nombreUsuario = bundle.getString("NOMBRE");
             urlUsuario = bundle.getString("FOTO");
             usuario.setText(nombreUsuario);
             Glide.with(this).load(urlUsuario).into(imagen);
         }
 
+        //FIREBASE
         dataPaciente = firebaseGestionHospital.getReference().child(FIREBASE_PACIENTES);
         dataED = firebaseGestionHospital.getReference().child(FIREBASE_ED);
+        dataMedicos = firebaseGestionHospital.getReference().child(FIREBASE_MEDICOS);
         dataED.keepSynced(true);
         dataPaciente.keepSynced(true);
+        dataMedicos.keepSynced(true);
+        mAuth = MyLoginActivity.mAuth;
 
-
+        //UIElements
         etiquetaTexto = (TextView) findViewById(R.id.textView);
         botonMuestraPacientes = (Button) findViewById(R.id.button2);
         botonMuestraPacientes.setOnClickListener(this);
         botonCrearPacientes = (Button) findViewById(R.id.button);
         botonCrearPacientes.setOnClickListener(this);
         gestor = new GestionPaciente();
-        //cargarGestor();
+//        gestionMedicos = new GestionMedicos();
     }
 
 
-
-
-
-    //    private void cargarGestor(){
-//        Gson gson = new Gson();
-//        SharedPreferences loader = getSharedPreferences("GestionPaciente", Context.MODE_PRIVATE);
-//        String gestorJSON = loader.getString(BASE_DE_DATOS, "");
-//        if(gestor==null)
-//            gestor=new GestionPaciente();
-//        else
-//            gestor = gson.fromJson(gestorJSON,GestionPaciente.class);
-//    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -113,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(keyCode == event.KEYCODE_BACK) {
+        if (keyCode == event.KEYCODE_BACK) {
 //            MyLoginActivity.mAuth.signOut();
-            finish();
+            moveTaskToBack(true);
         }
         return true;
     }
@@ -135,11 +137,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.logout:
+                //            signout();
+                return true;
+
+            case R.id.share:
+
+                String nombre, correo;
+                nombre = mAuth.getCurrentUser().getDisplayName();
+                correo = mAuth.getCurrentUser().getEmail();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, nombre + "\n" + correo);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -148,12 +167,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button2:
                 Intent intent = new Intent(this, Main22Activity.class);
                 intent.putExtra("GESTOR", gestor);
+                // intent.putExtra("GESTORM", gestionMedicos);
                 startActivity(intent);
                 break;
             case R.id.button:
                 Intent intent1 = new Intent(this, CrearPaciente.class);
                 intent1.putExtra("GESTOR2", gestor);
+                //  intent1.putExtra("GESTORM", gestionMedicos);
                 startActivity(intent1);
+                break;
+            case R.id.profilePicture:
+                dispatchTakePictureIntent();
                 break;
 
         }
@@ -168,6 +192,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imagen.setImageBitmap(imageBitmap);
+        }
+    }
+
     private boolean checkPlayServices() {
         GoogleApiAvailability gApi = GoogleApiAvailability.getInstance();
         int resultCode = gApi.isGooglePlayServicesAvailable(this);
@@ -175,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (gApi.isUserResolvableError(resultCode)) {
                 gApi.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-               // Toast.makeText(this, getResources().getString(R.string.common_google_play_services_api_unavailable_text), Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, getResources().getString(R.string.common_google_play_services_api_unavailable_text), Toast.LENGTH_LONG).show();
                 finish();
             }
             return false;
@@ -183,5 +216,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    private void signout() {
+        mAuth.signOut();
+        startActivity(new Intent(getApplicationContext(), MyLoginActivity.class));
+        finish();
+    }
+
+    private boolean checkUser() {
+        if (mAuth != null && mAuth.getCurrentUser() != null)
+            return true;
+        return false;
+    }
+
+        private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+//    private void dispatchTakePictureIntent() throws IOException {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//
+//            File photoFile = null;
+//
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException e) {
+//                Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        "com.example.beruto.teststring",
+//                        photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//
+//            }
+//        }
+//    }
+
+//    private File createImageFile() throws IOException {
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File image = File.createTempFile(
+//                imageFileName,  /* prefix */
+//                ".jpg",         /* suffix */
+//                storageDir      /* directory */
+//        );
+//
+//        // Save a file: path for use with ACTION_VIEW intents
+//        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+//        return image;
+//    }
 
 }
+
+

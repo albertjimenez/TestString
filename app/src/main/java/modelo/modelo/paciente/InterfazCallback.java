@@ -5,5 +5,5 @@ package modelo.modelo.paciente;
  */
 public interface InterfazCallback {
 
-    public void notificame(Paciente paciente);
+    public void notificame(Medico medico);
 }

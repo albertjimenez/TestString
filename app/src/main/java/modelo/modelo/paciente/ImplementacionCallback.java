@@ -11,7 +11,7 @@ public class ImplementacionCallback {
 
     }
 
-    public void hazCosas(Paciente paciente){
-        evento.notificame(paciente);
+    public void hazCosas(Medico medico){
+        evento.notificame(medico);
     }
 }

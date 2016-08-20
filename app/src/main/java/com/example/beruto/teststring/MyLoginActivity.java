@@ -48,8 +48,6 @@ public class MyLoginActivity extends AppCompatActivity implements GoogleApiClien
         signInButton.setOnClickListener(this);
 
         //modelo
-        Log.d("Token", getString(R.string.tokenText2));
-        //TODO fix abajo el requestIdToken
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
                 requestEmail().requestIdToken("821666023381-chac9gkoa69fgf4bv5fuf22gkvu9ujbe.apps.googleusercontent.com").build();
 
@@ -66,9 +64,15 @@ public class MyLoginActivity extends AppCompatActivity implements GoogleApiClien
                 if (user != null) {
                     Intent unIntent = new Intent(MyLoginActivity.this, MainActivity.class);
                     unIntent.putExtra("NOMBRE", user.getDisplayName());
-                    unIntent.putExtra("FOTO", user.getPhotoUrl().toString());
+
+                    if(user.getPhotoUrl()==null)
+                        unIntent.putExtra("FOTO", "https://www.dirtfan.com/include/graphics/profile_pics/default/default.jpg");
+                    else
+                        unIntent.putExtra("FOTO", user.getPhotoUrl().toString());
+
                     startActivity(unIntent);
                 }
+
             }
         };
 
@@ -96,8 +100,7 @@ public class MyLoginActivity extends AppCompatActivity implements GoogleApiClien
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d("INICIO", "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
