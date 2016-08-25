@@ -2,11 +2,8 @@ package com.example.beruto.teststring;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -16,24 +13,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import modelo.modelo.paciente.GestionMedicos;
 import modelo.modelo.paciente.GestionPaciente;
+import modelo.modelo.paciente.GraphicThreadController;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -82,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (bundle != null) {
             nombreUsuario = bundle.getString("NOMBRE");
             urlUsuario = bundle.getString("FOTO");
-            usuario.setText(nombreUsuario);
+            GraphicThreadController.actualizaTexto(usuario, nombreUsuario);
+            //usuario.setText(nombreUsuario);
             Glide.with(this).load(urlUsuario).into(imagen);
         }
 
@@ -197,7 +185,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imagen.setImageBitmap(imageBitmap);
+            GraphicThreadController.actualizaImagen(imagen, imageBitmap);
+//            imagen.setImageBitmap(imageBitmap);
         }
     }
 
