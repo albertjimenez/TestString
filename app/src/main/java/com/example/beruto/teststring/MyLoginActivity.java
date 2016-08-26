@@ -148,22 +148,4 @@ public class MyLoginActivity extends AppCompatActivity implements GoogleApiClien
             }
         }
     }
-//    private void handleSignInResult(GoogleSignInResult result) {
-//        Log.d("HOLA", "handleSignInResult:" + result.isSuccess());
-//
-//        if (result.isSuccess()) {
-//            // Signed in successfully, show authenticated UI.
-//            GoogleSignInAccount acct = result.getSignInAccount();
-//
-////            Intent intent = new Intent(this, MainActivity.class);
-////            intent.putExtra("NOMBRE", acct.getDisplayName());
-////            startActivity(intent);
-////            updateUI(true);
-//        } else {
-//            Log.d("HOLA","Error de sesion?");
-//            // Signed out, show unauthenticated UI.
-////            updateUI(false);
-//
-//        }
-//    }
 }

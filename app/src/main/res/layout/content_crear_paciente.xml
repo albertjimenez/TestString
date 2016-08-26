@@ -50,7 +50,7 @@
         android:layout_marginTop="37dp"
         android:textStyle="italic"
         android:textAlignment="center"
-        android:hint="SIP" />
+        android:hint="@string/dni" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -94,5 +94,17 @@
         android:layout_above="@+id/radioButtonHombre"
         android:layout_alignStart="@+id/radioButtonHombre" />
     </RadioGroup>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/datePicker"
+        android:hint="Fecha de nacimiento"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        android:layout_above="@+id/radioGroup"
+        android:layout_alignStart="@+id/editCP" />
 
 </RelativeLayout>

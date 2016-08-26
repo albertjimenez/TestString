@@ -16,7 +16,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:ems="10"
         android:id="@+id/cajonSIP"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:layout_marginTop="91dp"
         android:singleLine="true"
         android:hint="DNI sin letra"
-        android:numeric="integer" />
+        />
 
     <Button
         android:layout_width="wrap_content"

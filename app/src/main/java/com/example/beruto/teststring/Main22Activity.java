@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 
 import modelo.modelo.paciente.GestionMedicos;
 import modelo.modelo.paciente.GestionPaciente;
+import modelo.modelo.paciente.GraphicThreadController;
 import modelo.modelo.paciente.ImplementacionCallback;
 import modelo.modelo.paciente.InterfazCallback;
 import modelo.modelo.paciente.Medico;
@@ -28,7 +29,7 @@ import modelo.modelo.paciente.Paciente;
 
 public class Main22Activity extends AppCompatActivity implements View.OnClickListener, InterfazCallback {
     private GestionPaciente gestor;
-//    private GestionMedicos gestionMedicos;
+    //    private GestionMedicos gestionMedicos;
     private TextView textoPaciente;
     private EditText campoSIP;
     private Button botonComprobar;
@@ -88,10 +89,9 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
                 String gestorJSON = "";
                 if (dataSnapshot.getValue() != null) {
                     gestorJSON = dataSnapshot.getValue().toString();
-                } else {
+                } else
                     gestorJSON = gson.toJson(new GestionPaciente(true), GestionPaciente.class);
-                    Toast.makeText(getApplicationContext(), "Sin datos", Toast.LENGTH_SHORT).show();
-                }
+//                    Toast.makeText(getApplicationContext(), "Sin datos", Toast.LENGTH_SHORT).show();
 
 
                 try {
@@ -117,9 +117,9 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Paciente p = new Gson().fromJson(dataSnapshot.getValue().toString(), Paciente.class);
                 //TODO notificar
-               // if (gestor.editPaciente(p))
+                // if (gestor.editPaciente(p))
 //                    Toast.makeText(getApplicationContext(), "Se ha editado " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
-                 //   notificame(p);
+                //   notificame(p);
 
 //                else
 //                    Toast.makeText(getApplicationContext(), "No se ha podido editar " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
@@ -131,10 +131,8 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Paciente p = new Gson().fromJson(dataSnapshot.getValue().toString(), Paciente.class);
                 if (gestor.removePaciente(p))
-                    Toast.makeText(getApplicationContext(), "Se ha borrado " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getApplicationContext(), "No se ha borrado " + p.getNombre() + " - " + p.getDni(), Toast.LENGTH_SHORT).show();
-                guardarFireBase();
+                    guardarFireBase();
+
             }
 
             @Override
@@ -173,18 +171,14 @@ public class Main22Activity extends AppCompatActivity implements View.OnClickLis
             if (p != null)
                 textoPaciente.setText(p.toString2());
             else if (sip >= 0) {
-//                    String nombre =generadorDatosINE.getNombre();
-//                    String apellido = generadorDatosINE.getApellido();
-
                 String nombre = "Santi";
                 String apellido = "Bernabeuses";
-                textoPaciente.setText("No existo...aún, pero lo añado");
                 Paciente patient = new Paciente(nombre, apellido, sip,
-                        new GregorianCalendar(2000, 1, 16), "H", 12500 );
+                        new GregorianCalendar(2000, 1, 16), "H", 12500);
                 gestor.addPaciente(patient);
+                GraphicThreadController.actualizaTexto(textoPaciente,patient.toString2());
                 guardarFireBase();
                 guardarPaciente(patient);
-                //guardarGestor();
 
                 //Toast.makeText(getApplicationContext(), "Paciente añadido a FireBase", Toast.LENGTH_LONG).show();
             }

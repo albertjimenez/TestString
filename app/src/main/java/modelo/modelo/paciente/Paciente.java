@@ -33,7 +33,7 @@ public class Paciente implements Serializable {
     public Paciente(){
 
     }
-    public Paciente(String nombre, String apellidos, int sIP, GregorianCalendar fechaNacimiento, String sexo,
+    public Paciente(String nombre, String apellidos, int sIP, Calendar fechaNacimiento, String sexo,
                     int cP) {
         super();
         this.nombre = nombre;

@@ -106,4 +106,5 @@
     <string name="textoBuscar">Buscar por DNI</string>
     <string name="salir">Salir</string>
     <string name="compartir">Compartir ID Medico</string>
+    <string name="dni">DNI</string>
 </resources>

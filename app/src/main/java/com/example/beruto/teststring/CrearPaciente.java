@@ -1,11 +1,15 @@
 package com.example.beruto.teststring;
 
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -29,7 +33,7 @@ public class CrearPaciente extends AppCompatActivity {
     //TODO comprobar repetidos DNI, y calcular letra
     //TODO el gestor almacena el SIP como string y yo individualmente lo hago como INT! vigila eso
     private GestionPaciente gestor;
-//    private GestionMedicos gestionMedicos;
+    //    private GestionMedicos gestionMedicos;
     private DatabaseReference dataED = MainActivity.dataED;
     private DatabaseReference dataPaciente = MainActivity.dataPaciente;
     private DatabaseReference dataMedico = MainActivity.dataMedicos;
@@ -41,9 +45,11 @@ public class CrearPaciente extends AppCompatActivity {
     private EditText textApellido;
     private EditText textSIP;
     private EditText textCP;
+    private EditText textNacimiento;
 
     private RadioButton radioHombre;
     private RadioButton radioMujer;
+    final Paciente paciente = new Paciente(null,null,0,null,null,0);
 
 
     @Override
@@ -59,6 +65,7 @@ public class CrearPaciente extends AppCompatActivity {
         textApellido = (EditText) findViewById(R.id.editApellidos);
         textSIP = (EditText) findViewById(R.id.editSIP);
         textCP = (EditText) findViewById(R.id.editCP);
+        textNacimiento = (EditText) findViewById(R.id.datePicker);
         radioHombre = (RadioButton) findViewById(R.id.radioButtonHombre);
         radioMujer = (RadioButton) findViewById(R.id.radioButtonMujer);
 
@@ -110,6 +117,16 @@ public class CrearPaciente extends AppCompatActivity {
             }
         });
 
+        //FOCUS nacimiento
+        textNacimiento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                BirthPicker myDialogFragment = new BirthPicker();
+                myDialogFragment.setPaciente(paciente);
+                myDialogFragment.show(getFragmentManager(),"datePicker");
+            }
+        });
+
     }
 
 //        dataMedico.addValueEventListener(new ValueEventListener() {
@@ -137,8 +154,16 @@ public class CrearPaciente extends AppCompatActivity {
 
 
         if (SIP_CHECKED != -1 && CP_CHECKED != -1) {
-            Paciente p = new Paciente(nombre, apellidos, SIP_CHECKED, new GregorianCalendar(), sexo, CP_CHECKED);
-            gestor.addPaciente(p);
+            Paciente p = new Paciente(nombre, apellidos, SIP_CHECKED, paciente.getFechaNacimiento(), sexo, CP_CHECKED);
+
+            if (gestor.searchPaciente(SIP_CHECKED) == null) {
+                gestor.addPaciente(p);
+                dataED.setValue(gson.toJson(gestor));
+                dataPaciente.child(Integer.toString(p.getDni())).setValue(gson.toJson(p));
+            }
+            else
+                aviso(p);
+
 //            gestionMedicos.addMedico(new Medico(
 //                    mAuth.getCurrentUser().getDisplayName(),
 //                    mAuth.getCurrentUser().getUid(),
@@ -147,8 +172,8 @@ public class CrearPaciente extends AppCompatActivity {
 
 //            dataMedico.setValue(gson.toJson(gestionMedicos));
 
-            dataED.setValue(gson.toJson(gestor));
-            dataPaciente.child(sip).setValue(gson.toJson(p));
+//            dataED.setValue(gson.toJson(gestor));
+//            dataPaciente.child(sip).setValue(gson.toJson(p));
             return true;
         }
         return false;
@@ -185,6 +210,30 @@ public class CrearPaciente extends AppCompatActivity {
             dataPaciente.child(sip).removeValue();
         }
 
+    }
+    private void aviso(final Paciente unPaciente){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setPositiveButton("Sustituir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Gson g = new Gson();
+                gestor.addPaciente(unPaciente);
+                Log.d("DNI", Integer.toString(unPaciente.getDni()));
+                dataED.setValue(g.toJson(gestor));
+                dataPaciente.child(Integer.toString(unPaciente.getDni())).setValue(g.toJson(unPaciente));
+
+            }
+        });
+        alertBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alertBuilder.setMessage("Ya hay un paciente con el mismo DNI "+ unPaciente.getDni());
+        alertBuilder.setTitle("Aviso");
+        alertBuilder.setCancelable(false);
+        alertBuilder.create().show();
     }
 
 }
